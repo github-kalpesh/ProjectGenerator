@@ -1,0 +1,6 @@
+@ProjectGenerator.Web_HostAddress = http://localhost:5190
+
+GET {{ProjectGenerator.Web_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

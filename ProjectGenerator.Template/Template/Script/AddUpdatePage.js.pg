@@ -1,0 +1,54 @@
+$(document).ready(function () {
+    var id = $('#hdnId').val();
+    if (!IsNullOrWhiteSpaceOrUndefined(id) && id != _EmptyGuid) {
+        //Edit mode
+        ClearForm();
+        Get#ENTITY#(id);
+    }
+    else{
+        //New mode
+    }
+});
+function Get#ENTITY#(id) {
+    MakeAjax('/api/#ENTITY#/Get#ENTITY#?Id=' + id, "GET", null, function (data) {
+        if (CheckResponse(data)) {
+            if (data.Data != null) {
+                var ResponseData = data.Data;
+                $('#div#ENTITY#Panel').SetDataToSection(ResponseData);
+            }
+        } else {
+            ErrorMsg(data.Message)
+        }
+    }, function (error) {
+        console.log(error);
+        ErrorMsg("Error");
+    });
+}
+function Save#ENTITY#() {
+    if (ValidateSection()) {
+        var #ENTITY#Id = $('#hdnId').val();
+        var dataObj = GetValuesFromSection('#div#ENTITY#Panel');
+        if (confirm("Are you sure want to save the #ENTITY#.")) {
+            MakePostAjax("/api/#ENTITY#/AddUpdate#ENTITY#",  dataObj, function (successData) {
+                    if (CheckResponse(successData)) {
+                        SuccessMsg(successData.Message);
+                        if (!IsNullOrWhiteSpaceOrUndefined(#ENTITY#Id)) {
+                            setTimeout(function () { 
+                                window.location.href = "/#ENTITY#/Index";                            
+                            }, 1500);
+                        }
+                    } else {
+                        ErrorMsg(successData.Message);
+                    }
+                }, function (errorData) {
+                    ErrorMsg(errorData);
+                });
+            
+        }
+    }
+}
+
+
+function ClearForm() {
+     
+}

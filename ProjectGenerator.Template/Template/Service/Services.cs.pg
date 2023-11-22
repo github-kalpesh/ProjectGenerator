@@ -1,0 +1,93 @@
+using #PROJECTNAME#.Models;
+using NHibernate;
+using System.Collections.Generic;
+using #PROJECTNAME#.Repository;
+using System;
+using System.Linq;
+using #PROJECTNAME#.Common;
+
+namespace #PROJECTNAME#.Services
+{
+    public static class #ENTITY#Services
+    {
+        
+        #region Get #ENTITY#'s
+
+        public static #ENTITY# Get#ENTITY#(Guid #ENTITY#Id)
+        {
+			#ENTITY#Repository _Repository = new #ENTITY#Repository();
+            return _Repository.Get(#ENTITY#Id);
+        }
+
+        public static IList<#ENTITY#> GetAll#ENTITY#()
+        {
+			#ENTITY#Repository _Repository = new #ENTITY#Repository();
+            return _Repository.GetAll();
+        }
+        
+        #endregion
+
+        #region Add/Update #ENTITY#
+
+        public static bool AddUpdate#ENTITY#(#ENTITY# #ENTITY#)
+        {
+            try
+            {
+                using(var uow = new UnitOfWork())
+                {
+					if(#ENTITY#.IsNew())
+                    {
+						
+                    }
+                    else
+                    {
+						
+                    }
+					
+                    uow.Save(#ENTITY#);
+                    uow.Commit();
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.LogError(ex);
+                throw ex;
+            }
+            return true;
+        }
+        
+        #endregion
+        
+        #region Delete #ENTITY#
+
+        public static bool Delete(Guid #ENTITY#Id)
+        {
+            try
+            {
+                var #ENTITY# = #ENTITY#Services.Get#ENTITY#(#ENTITY#Id);
+                if(#ENTITY# != null)
+                {
+                    using (var uow = new UnitOfWork())
+                    {
+                        uow.Delete(#ENTITY#);
+                        uow.Commit();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.LogError(ex);
+                throw ex;
+            }
+            return true;
+        }
+
+        #endregion
+
+		public static List<DropDownItem> GetDropDownItem()
+        {
+			#ENTITY#Repository _Repository = new #ENTITY#Repository();
+            return _Repository.Get#ENTITY#DropDownItem().ToList();
+        }
+    }
+}

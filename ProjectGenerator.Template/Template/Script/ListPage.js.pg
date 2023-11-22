@@ -1,0 +1,37 @@
+$(document).ready(function () {
+    BindGrid();
+});
+function BindGrid() {
+    var colunm = [
+		#DATACOLUMN#,
+        {
+            bSortable: false,
+            sClass: "action-cell text-center",
+            mRender: function (data, type, row, meta) {
+                var strReturn = '';
+                strReturn += '<a href=/#ENTITY#/AddUpdate#ENTITY#?#ENTITY#Id=' + row.Id + ' class="btn btn-xs btn-green tooltips" data-placement="top" data-original-title="Edit"><i class="clip-pencil-3"></i> Edit</a>';
+                strReturn += '  <a onclick="Delete#ENTITY#(\'' + row.Id + '\')" class="btn btn-xs btn-danger tooltips" data-placement="top" data-original-title="Share"><i class="fa fa-trash-o"></i> Delete</a>';
+                return strReturn;
+            }
+        }
+    ];
+    LoadTable('#tbl#ENTITY#List', "/api/#ENTITY#/GetAll#ENTITY#", {}, colunm);
+}
+
+function Delete#ENTITY#(id) {
+    if (confirm("Are you sure want to delete this #ENTITY#.")) {
+        if (id) {
+            MakeAjax("/api/#ENTITY#/Delete#ENTITY#", "GET", {Id : id}, function (data) {
+                if (CheckResponse(data)) {
+                    SuccessMsg(data.Message);
+                    BindGrid();
+                } else {
+                    ErrorMsg(data.Message)
+                }
+            }, function (error) {
+                console.log(error);
+                ErrorMsg("Error");
+            })
+        }
+    }
+}

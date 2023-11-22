@@ -1,0 +1,129 @@
+﻿using #PROJECTNAME#.Common;
+using System;
+using System.Web.Http;
+using #PROJECTNAME#.Services;
+using #PROJECTNAME#.Models;
+using System.Diagnostics.Metrics;
+
+namespace #PROJECTNAME#.API
+{
+    [ServiceAuth]
+    public class #ENTITY#Controller : BaseController
+    {
+        #region Get #ENTITY#'s
+
+        [AcceptVerbs("GET")]
+        public ActionResultData Get#ENTITY#(Guid Id)
+        {
+            var ard = new ActionResultData();
+            try
+            {
+                var #ENTITY# = #ENTITY#Services.Get#ENTITY#(Id);
+                if (#ENTITY# != null)
+                {
+                    ard.Success(#ENTITY#);
+                }
+                else
+                {
+                    ard.Error("#ENTITY# not available");
+                }
+            }
+            catch (Exception ex)
+            {
+                ard.Error(ex);
+                ErrorLog.LogError(ex);
+            }
+            return ard;
+        }
+
+        [AcceptVerbs("GET")]
+        public ActionResultData GetAll#ENTITY#()
+        {
+            var ard = new ActionResultData();
+            try
+            {
+                var #ENTITY#s = #ENTITY#Services.GetAll#ENTITY#();
+                ard.Success(#ENTITY#s);
+            }
+            catch (Exception ex)
+            {
+                ard.Error(ex);
+                ErrorLog.LogError(ex);
+            }
+            return ard;
+        }
+
+        #endregion
+
+        #region Add/Update #ENTITY#
+
+        [AcceptVerbs("POST")]
+        public ActionResultData AddUpdate#ENTITY#(#ENTITY# #ENTITY#)
+        {
+            var ard = new ActionResultData();
+            try
+            {
+                string msg = "";
+                if (#ENTITY#.Id == Guid.Empty)
+                {
+                    msg = "#ENTITY# save successful";
+                }
+                else
+                {
+                    msg = "#ENTITY# update successful";
+                }
+                var isAddUpdate = #ENTITY#Services.AddUpdate#ENTITY#(#ENTITY#);
+                ard.Success(isAddUpdate, msg);
+            }
+            catch (Exception ex)
+            {
+                ard.Error(ex);
+                ErrorLog.LogError(ex);
+            }
+            return ard;
+        }
+
+        #endregion
+
+        #region Delete #ENTITY#
+
+        [AcceptVerbs("GET", "POST")]
+        public ActionResultData Delete#ENTITY#(Guid Id)
+        {
+            var ard = new ActionResultData();
+            try
+            {
+                var #ENTITY# = #ENTITY#Services.Delete(Id);
+                ard.Success(#ENTITY#, "#ENTITY# Deleted successfully");
+            }
+            catch (Exception ex)
+            {
+                ard.Error(ex);
+                ErrorLog.LogError(ex);
+            }
+            return ard;
+        }
+
+        #endregion
+
+        #region Other API's
+        [AcceptVerbs("GET")]
+        public ActionResultData GetDropDown()
+        {
+            var ard = new ActionResultData();
+            try
+            {
+                var dropDownItem = #ENTITY#Services.GetDropDownItem();
+                ard.Success(dropDownItem);
+            }
+            catch (Exception ex)
+            {
+                ard.Error(ex);
+                ErrorLog.LogError(ex);
+            }
+            return ard;
+        }
+
+        #endregion
+    }
+}

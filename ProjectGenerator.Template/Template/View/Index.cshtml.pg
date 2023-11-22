@@ -1,0 +1,28 @@
+
+@{
+    ViewBag.Title = "#ENTITY# List";
+    ViewBag.Menu = "#ENTITY#";
+    ViewBag.PageName = "#ENTITY# List";
+    ViewBag.MenuIcon = "clip-user-2";
+    ViewBag.MenuUrl = "/#ENTITY#/Index";
+}
+@section TitleButtons
+{
+    <div class="col-sm-4 text-right"><a  href="/#ENTITY#/AddUpdate#ENTITY#" class="btn btn-primary float-right">Add New #ENTITY#</a></div>
+}
+  
+<div class="row">
+    <div class="col-md-12">
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered table-hover" id="tbl#ENTITY#List">
+                <thead>
+                    <tr>
+						#DATACOLUMN#
+                    </tr>
+                </thead>
+
+            </table>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/Controller/#ENTITY#/#ENTITY#List.js"></script>

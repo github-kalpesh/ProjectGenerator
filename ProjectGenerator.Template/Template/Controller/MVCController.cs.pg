@@ -1,0 +1,33 @@
+﻿using #PROJECTNAME#.Common;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+
+namespace #PROJECTNAME#.Controllers
+{
+    [AuthActionFilter]
+    public class #ENTITY#Controller : Controller
+    {
+        public ActionResult Index()
+        {
+            return View();
+        }
+
+        public ActionResult #ENTITY#()
+        {
+            return View("Index");
+        }
+
+        public ActionResult AddUpdate#ENTITY#(string #ENTITY#Id = "")
+        {
+            if (string.IsNullOrWhiteSpace(#ENTITY#Id))
+            {
+                #ENTITY#Id = Guid.Empty.ToString();
+            }
+            ViewBag.Id = #ENTITY#Id;
+            return View();
+        }
+    }
+}

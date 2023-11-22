@@ -1,0 +1,37 @@
+@{
+    ViewBag.Title = "Add/Update #ENTITY#";
+    ViewBag.Menu = "#ENTITY#";
+    ViewBag.PageName = "Add/Update #ENTITY#";
+    ViewBag.MenuIcon = "clip-user-2";
+    ViewBag.MenuUrl = "/#ENTITY#/Index";
+
+}
+<div class="row">
+    <div class="col-md-12">
+        <!-- start: FORM VALIDATION 1 PANEL -->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="clip-user-2"></i> Add/Update #ENTITY# Details
+            </div>
+            <div class="panel-body" id="div#ENTITY#Panel">
+                <div class="row col-md-12">
+                    #FORMCONTROL#
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-sm-12 ">
+                    <a class="btn btn-default btn-squared pull-right" href="/#ENTITY#/Index">
+                        Cancel
+                    </a>
+                    <button type="button" class="btn btn-primary btn-squared pull-right" onclick="Save#ENTITY#()">
+                        <i class="clip-note"></i> Save
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end: FORM VALIDATION 1 PANEL -->
+</div>
+</div>
+<script src="~/Scripts/Controller/#ENTITY#/AddUpdate#ENTITY#.js"></script>

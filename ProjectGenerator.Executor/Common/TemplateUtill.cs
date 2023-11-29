@@ -13,7 +13,7 @@ namespace ProjectGenerator.Executor.Common
                 var templateFiles = Directory.GetFiles(Path.Combine(TemplateProjectPath + "/Template/Repository/"));
                 if (templateFiles != null && templateFiles.Count() > 0) 
                 {
-                    return templateFiles.Where(x => x.IndexOf("Repository.cs.pg") != -1).FirstOrDefault();
+                    return templateFiles.Where(x => x.IndexOf("Repository_EF.cs.pg") != -1).FirstOrDefault();
                 }
                 return "";
             }
@@ -49,7 +49,7 @@ namespace ProjectGenerator.Executor.Common
                 var templateFiles = Directory.GetFiles(Path.Combine(TemplateProjectPath + "/Template/Model/"));
                 if (templateFiles != null && templateFiles.Count() > 0)
                 {
-                    return templateFiles.Where(x => x.IndexOf("Model.cs.pg") != -1).FirstOrDefault();
+                    return templateFiles.Where(x => x.IndexOf("Model_DTO.cs.pg") != -1).FirstOrDefault();
                 }
                 return "";
             }

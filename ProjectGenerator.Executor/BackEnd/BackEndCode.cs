@@ -50,7 +50,9 @@ namespace ProjectGenerator.Executor.BackEnd
             var repositoryText = File.ReadAllText(TemplateUtill.RepositoryTemplatePath);
             foreach (var table in _Tables)
             {
-                var fileText = repositoryText.Replace("#PROJECTNAME#", _configuration.ProjectName).Replace("#ENTITY#", table.DisplayTableName);
+                var fileText = repositoryText.Replace("#PROJECTNAME#", _configuration.ProjectName)
+                    .Replace("#ENTITY#", table.DisplayTableName)
+                    .Replace("#TABLENAME#", table.TableName);
                 File.WriteAllText(Path.Combine(_configuration.RepositoryDirectory, table.DisplayTableName + "Repository.cs"), fileText);
             }
         }
@@ -102,6 +104,7 @@ namespace ProjectGenerator.Executor.BackEnd
                 }
                 var fileText = repositoryText.Replace("#PROJECTNAME#", _configuration.ProjectName)
                     .Replace("#ENTITY#", table.DisplayTableName)
+                    .Replace("#TABLENAME#", table.TableName)
                     .Replace("#PROPERTICES#", propertices);
                 File.WriteAllText(Path.Combine(_configuration.ModelDirectory, table.DisplayTableName + ".cs"), fileText);
             }

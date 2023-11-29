@@ -1,0 +1,27 @@
+﻿using #PROJECTNAME#.Models;
+using #PROJECTNAME#.Models.EntityFramwork;
+using NHibernate;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace #PROJECTNAME#.Repository
+{
+    interface I#ENTITY#Repository : IBaseRepository<Models.EntityFramwork.#TABLENAME#>
+    {
+        IList<DropDownItem> Get#ENTITY#DropDownItem();
+    }
+    public class #ENTITY#Repository : BaseRepository<Models.EntityFramwork.#TABLENAME#>, I#ENTITY#Repository
+    {
+        public IList<DropDownItem> Get#ENTITY#DropDownItem()
+        {
+            var query = from x in dbContext.#TABLENAME# select x;
+            return query.ToList().Select(x => new DropDownItem()
+            {
+                Value = x.Id,
+                Text = x.Name,
+                Selected = false
+            }).ToList();
+        }
+    }
+}

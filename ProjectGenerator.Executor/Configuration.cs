@@ -14,10 +14,13 @@
         public string OutputDirectory { get; set; }
         public List<PageDetail> Pages { get; set; }
         
-        public string RepositoryDirectory { get { return Path.Combine(OutputDirectory, "Reposiroty"); } }
+        public string RepositoryDirectory { get { return Path.Combine(OutputDirectory, "Repository"); } }
         public string APIControllerDirectory { get { return Path.Combine(OutputDirectory, "API"); } }
         public string ServicesDirectory { get { return Path.Combine(OutputDirectory, "Services"); } }
         public string ModelDirectory { get { return Path.Combine(OutputDirectory, "Models"); } }
+        public string MappingDirectory { get { return Path.Combine(OutputDirectory, "Mapping"); } }
+        public string MVCControllerDirectory { get { return Path.Combine(OutputDirectory, "Controller"); } }
+        public string ScriptDirectory { get { return Path.Combine(OutputDirectory, "Scripts/Controller"); } }
     }
 
     public class PageDetail

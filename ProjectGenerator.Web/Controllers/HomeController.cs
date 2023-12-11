@@ -30,16 +30,23 @@ namespace ProjectGenerator.Web.Controllers
                 new PageDetail()
                 {
                     TableName = "t_CustomInvoice",
-                    PageName = "CustomInvoice",
+                    PageName = "Custom Invoice",
                     IsGenerateBackEnd = true,
                     IsGenerateFrontEnd = true,
                 },
                 new PageDetail()
                 {
-                    TableName = "t_Port",
-                    PageName = "Port",
+                    TableName = "t_CustomInvoiceDetail",
+                    PageName = "CustomInvoiceDetail",
                     IsGenerateBackEnd = true,
-                    IsGenerateFrontEnd = true,
+                    IsGenerateFrontEnd = false,
+                },
+                new PageDetail()
+                {
+                    TableName = "t_CustomInvoiceManufactuingCompany",
+                    PageName = "CustomInvoiceManufactuingCompany",
+                    IsGenerateBackEnd = true,
+                    IsGenerateFrontEnd = false,
                 }
             };
             Execute execute = new Execute();

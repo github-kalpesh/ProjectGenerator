@@ -1,0 +1,19 @@
+using FluentNHibernate.Mapping;
+using BlueLakeCeramic.Models;
+
+namespace #PROJECTNAME#.Mapping
+{
+    public class #ENTITY#EntityMapping
+    {
+        public class #ENTITY#Mapping :  ClassMap<#ENTITY#> 
+        {
+            public #ENTITY#Mapping()
+            {
+                Table("t_#ENTITY#");
+                Id(x => x.Id);
+                
+                #MAPPINGDATA#
+            }
+        }
+    }
+}

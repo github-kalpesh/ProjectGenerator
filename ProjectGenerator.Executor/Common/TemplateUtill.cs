@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace ProjectGenerator.Executor.Common
 {
-    internal static class TemplateUtill
+    public static class TemplateUtill
     {
         public static string RepositoryTemplatePath {
             get {
                 var templateFiles = Directory.GetFiles(Path.Combine(TemplateProjectPath + "/Template/Repository/"));
                 if (templateFiles != null && templateFiles.Count() > 0) 
                 {
-                    return templateFiles.Where(x => x.IndexOf("Repository_EF.cs.pg") != -1).FirstOrDefault();
+                    return templateFiles.Where(x => x.IndexOf("Repository.cs.pg") != -1).FirstOrDefault();
                 }
                 return "";
             }
@@ -49,7 +49,19 @@ namespace ProjectGenerator.Executor.Common
                 var templateFiles = Directory.GetFiles(Path.Combine(TemplateProjectPath + "/Template/Model/"));
                 if (templateFiles != null && templateFiles.Count() > 0)
                 {
-                    return templateFiles.Where(x => x.IndexOf("Model_DTO.cs.pg") != -1).FirstOrDefault();
+                    return templateFiles.Where(x => x.IndexOf("Model.cs.pg") != -1).FirstOrDefault();
+                }
+                return "";
+            }
+        }
+        public static string MappingTemplatePath
+        {
+            get
+            {
+                var templateFiles = Directory.GetFiles(Path.Combine(TemplateProjectPath + "/Template/Mapping/"));
+                if (templateFiles != null && templateFiles.Count() > 0)
+                {
+                    return templateFiles.Where(x => x.IndexOf("Mapping.cs.pg") != -1).FirstOrDefault();
                 }
                 return "";
             }
@@ -63,6 +75,30 @@ namespace ProjectGenerator.Executor.Common
                 if (templateFiles != null && templateFiles.Count() > 0)
                 {
                     return templateFiles.Where(x => x.IndexOf("MVCController.cs.pg") != -1).FirstOrDefault();
+                }
+                return "";
+            }
+        }
+        public static string ScriptListTemplatePath
+        {
+            get
+            {
+                var templateFiles = Directory.GetFiles(Path.Combine(TemplateProjectPath + "/Template/Script/"));
+                if (templateFiles != null && templateFiles.Count() > 0)
+                {
+                    return templateFiles.Where(x => x.IndexOf("ListPage.js.pg") != -1).FirstOrDefault();
+                }
+                return "";
+            }
+        }
+        public static string ScriptAddEditTemplatePath
+        {
+            get
+            {
+                var templateFiles = Directory.GetFiles(Path.Combine(TemplateProjectPath + "/Template/Script/"));
+                if (templateFiles != null && templateFiles.Count() > 0)
+                {
+                    return templateFiles.Where(x => x.IndexOf("AddUpdatePage.js.pg") != -1).FirstOrDefault();
                 }
                 return "";
             }

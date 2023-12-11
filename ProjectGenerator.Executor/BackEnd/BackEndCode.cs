@@ -38,6 +38,7 @@ namespace ProjectGenerator.Executor.BackEnd
                 GenerateService();
                 GenerateAPIController();
                 GenerateModel();
+                GenerateMapping();
             }
         }
 
@@ -107,6 +108,33 @@ namespace ProjectGenerator.Executor.BackEnd
                     .Replace("#TABLENAME#", table.TableName)
                     .Replace("#PROPERTICES#", propertices);
                 File.WriteAllText(Path.Combine(_configuration.ModelDirectory, table.DisplayTableName + ".cs"), fileText);
+            }
+        }
+
+        public void GenerateMapping()
+        {
+            if (!Directory.Exists(_configuration.MappingDirectory))
+            {
+                Directory.CreateDirectory(_configuration.MappingDirectory);
+            }
+            var mappingText = File.ReadAllText(TemplateUtill.MappingTemplatePath);
+            foreach (var table in _Tables)
+            {
+                var propertices = "";
+                var tableInfo = _dbConnection.GetTableInfo(table.TableName);
+                if (tableInfo != null && tableInfo.Count > 0)
+                {
+                    foreach (var column in tableInfo)
+                    {
+                        var formate = "                Map(x => x.{0});\n";
+                        propertices += formate.Replace("{0}", column.ColumnName);
+                    }
+                }
+                var fileText = mappingText.Replace("#PROJECTNAME#", _configuration.ProjectName)
+                    .Replace("#ENTITY#", table.DisplayTableName)
+                    .Replace("#TABLENAME#", table.TableName)
+                    .Replace("#MAPPINGDATA#", propertices);
+                File.WriteAllText(Path.Combine(_configuration.MappingDirectory, table.DisplayTableName + "Mapping.cs"), fileText);
             }
         }
     }

@@ -79,6 +79,30 @@ namespace ProjectGenerator.Executor.Common
                 return "";
             }
         }
+        public static string ListPageTemplatePath
+        {
+            get
+            {
+                var templateFiles = Directory.GetFiles(Path.Combine(TemplateProjectPath + "/Template/View/"));
+                if (templateFiles != null && templateFiles.Count() > 0)
+                {
+                    return templateFiles.Where(x => x.IndexOf("Index.cshtml.pg") != -1).FirstOrDefault();
+                }
+                return "";
+            }
+        }
+        public static string AddEditPageTemplatePath
+        {
+            get
+            {
+                var templateFiles = Directory.GetFiles(Path.Combine(TemplateProjectPath + "/Template/View/"));
+                if (templateFiles != null && templateFiles.Count() > 0)
+                {
+                    return templateFiles.Where(x => x.IndexOf("AddUpdateCountry.cshtml") != -1).FirstOrDefault();
+                }
+                return "";
+            }
+        }
         public static string ScriptListTemplatePath
         {
             get
@@ -139,6 +163,34 @@ namespace ProjectGenerator.Executor.Common
             return index > -1
                 ? SqlServerTypes[index]
                 : null;
+        }
+
+        public static string ToDisplayCase(this string text)
+        {
+            if (text == null)
+            {
+                throw new ArgumentNullException(nameof(text));
+            }
+            if (text.Length < 2)
+            {
+                return text;
+            }
+            var sb = new StringBuilder();
+            sb.Append(text[0]);
+            for (int i = 1; i < text.Length; ++i)
+            {
+                char c = text[i];
+                if (char.IsUpper(c))
+                {
+                    sb.Append(' ');
+                    sb.Append(c);
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+            return sb.ToString();
         }
     }
 }

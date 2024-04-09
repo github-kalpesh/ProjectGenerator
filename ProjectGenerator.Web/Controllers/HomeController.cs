@@ -23,32 +23,118 @@ namespace ProjectGenerator.Web.Controllers
         public IEnumerable<WeatherForecast> Get()
         {
             var configuration = new Configuration();
-            configuration.ConnectionString = @"Data Source=DESKTOP-T312584;Initial Catalog=BlueLakeCeramic;Integrated Security=True;";
-            configuration.ProjectName = "BlueLakeCeramic";
-            configuration.OutputDirectory = @"D:\Work\DotNet\LocalProject\PG_Test\PG_Test1";
+            configuration.ConnectionString = @"Data Source=DESKTOP-T312584;Initial Catalog=HospitalManagement;Integrated Security=True;";
+            configuration.ProjectName = "HospitalManagement.Web";
+            configuration.OutputDirectory = @"D:\Work\DotNet\LiveProject\HospitalManagement\Web\HMS";
             configuration.Pages = new List<PageDetail>() {
                 new PageDetail()
                 {
-                    TableName = "t_CustomInvoice",
-                    PageName = "Custom Invoice",
+                    TableName = "t_AppSetting",
+                    PageName = "Setting",
                     IsGenerateBackEnd = true,
                     IsGenerateFrontEnd = true,
                 },
                 new PageDetail()
                 {
-                    TableName = "t_CustomInvoiceDetail",
-                    PageName = "CustomInvoiceDetail",
+                    TableName = "t_Users",
+                    PageName = "Users",
                     IsGenerateBackEnd = true,
-                    IsGenerateFrontEnd = false,
+                    IsGenerateFrontEnd = true,
                 },
                 new PageDetail()
                 {
-                    TableName = "t_CustomInvoiceManufactuingCompany",
-                    PageName = "CustomInvoiceManufactuingCompany",
+                    TableName = "t_Patients",
+                    PageName = "Patient",
                     IsGenerateBackEnd = true,
-                    IsGenerateFrontEnd = false,
+                    IsGenerateFrontEnd = true,
+                },
+                new PageDetail()
+                {
+                    TableName = "t_Staffs",
+                    PageName = "Staff",
+                    IsGenerateBackEnd = true,
+                    IsGenerateFrontEnd = true,
+                },
+                new PageDetail()
+                {
+                    TableName = "t_PatientAttendance",
+                    PageName = "Patient Attendance",
+                    IsGenerateBackEnd = true,
+                    IsGenerateFrontEnd = true,
+                },
+                new PageDetail()
+                {
+                    TableName = "t_StaffAttendance",
+                    PageName = "Staff Attendance",
+                    IsGenerateBackEnd = true,
+                    IsGenerateFrontEnd = true,
+                },
+                new PageDetail()
+                {
+                    TableName = "t_PaidFees",
+                    PageName = "Paid Fees",
+                    IsGenerateBackEnd = true,
+                    IsGenerateFrontEnd = true,
+                },
+                new PageDetail()
+                {
+                    TableName = "t_Leave",
+                    PageName = "Leave",
+                    IsGenerateBackEnd = true,
+                    IsGenerateFrontEnd = true,
+                },
+                new PageDetail()
+                {
+                    TableName = "t_Instruments",
+                    PageName = "Instruments",
+                    IsGenerateBackEnd = true,
+                    IsGenerateFrontEnd = true,
+                },
+                new PageDetail()
+                {
+                    TableName = "t_Diagnostic",
+                    PageName = "Diagnostic",
+                    IsGenerateBackEnd = true,
+                    IsGenerateFrontEnd = true,
+                },
+                new PageDetail()
+                {
+                    TableName = "t_PatientFollowUp",
+                    PageName = "Patient FollowUp",
+                    IsGenerateBackEnd = true,
+                    IsGenerateFrontEnd = true,
+                },
+                new PageDetail()
+                {
+                    TableName = "t_Salary",
+                    PageName = "Salary",
+                    IsGenerateBackEnd = true,
+                    IsGenerateFrontEnd = true,
+                },
+                new PageDetail()
+                {
+                    TableName = "t_Documents",
+                    PageName = "Documents",
+                    IsGenerateBackEnd = true,
+                    IsGenerateFrontEnd = true,
+                },
+                new PageDetail()
+                {
+                    TableName = "t_LOV",
+                    PageName = "List Of Values",
+                    IsGenerateBackEnd = true,
+                    IsGenerateFrontEnd = true,
+                },
+                new PageDetail()
+                {
+                    TableName = "t_Hospital",
+                    PageName = "Hospital",
+                    IsGenerateBackEnd = true,
+                    IsGenerateFrontEnd = true,
                 }
+
             };
+            configuration.IsOverride = true;
             Execute execute = new Execute();
             execute.Generate(configuration);
 

@@ -21,7 +21,7 @@ namespace ProjectGenerator.Executor.FrontEnd
             var tables = _dbConnection.GetTables();
             if (_configuration.Pages != null && _configuration.Pages.Count > 0)
             {
-                _Tables = tables.Where(x => _configuration.Pages.Any(y => y.TableName == x.TableName && y.IsGenerateBackEnd)).ToList();
+                _Tables = tables.Where(x => _configuration.Pages.Any(y => y.TableName == x.TableName && y.IsGenerateFrontEnd)).ToList();
             }
             else
             {
@@ -33,7 +33,10 @@ namespace ProjectGenerator.Executor.FrontEnd
             if (_Tables != null && _Tables.Count > 0)
             {
                 GenerateScriptList();
+                GenerateScriptAddEdit();
                 GenerateMVCControler();
+                GenerateListPage();
+                GenerateAddEditPage();
                 //GenerateAPIController();
                 //GenerateModel();
             }
@@ -45,7 +48,7 @@ namespace ProjectGenerator.Executor.FrontEnd
             {
                 Directory.CreateDirectory(_configuration.ScriptDirectory);
             }
-            var repositoryText = File.ReadAllText(TemplateUtill.ScriptListTemplatePath);
+            var templateText = File.ReadAllText(TemplateUtill.ScriptListTemplatePath);
             foreach (var table in _Tables)
             {
                 var controllerDir = Path.Combine(_configuration.ScriptDirectory, table.DisplayTableName);
@@ -78,9 +81,28 @@ namespace ProjectGenerator.Executor.FrontEnd
                 {
                     Directory.CreateDirectory(controllerDir);
                 }
-                var fileText = repositoryText.Replace("#DATACOLUMN#", dataColumn)
+                var fileText = templateText.Replace("#DATACOLUMN#", dataColumn)
                     .Replace("#ENTITY#", table.DisplayTableName);
-                File.WriteAllText(Path.Combine(controllerDir, table.DisplayTableName + ".js"), fileText);
+                File.WriteAllText(Path.Combine(controllerDir, table.DisplayTableName + "List.js"), fileText);
+            }
+        }
+
+        public void GenerateScriptAddEdit()
+        {
+            if (!Directory.Exists(_configuration.ScriptDirectory))
+            {
+                Directory.CreateDirectory(_configuration.ScriptDirectory);
+            }
+            var templateText = File.ReadAllText(TemplateUtill.ScriptAddEditTemplatePath);
+            foreach (var table in _Tables)
+            {
+                var controllerDir = Path.Combine(_configuration.ScriptDirectory, table.DisplayTableName);
+                if (!Directory.Exists(controllerDir))
+                {
+                    Directory.CreateDirectory(controllerDir);
+                }
+                var fileText = templateText.Replace("#ENTITY#", table.DisplayTableName);
+                File.WriteAllText(Path.Combine(controllerDir, table.DisplayTableName + "AddEdit.js"), fileText);
             }
         }
 
@@ -90,13 +112,140 @@ namespace ProjectGenerator.Executor.FrontEnd
             {
                 Directory.CreateDirectory(_configuration.MVCControllerDirectory);
             }
-            var repositoryText = File.ReadAllText(TemplateUtill.MVCTemplatePath);
+            var templateText = File.ReadAllText(TemplateUtill.MVCTemplatePath);
             foreach (var table in _Tables)
             {
-                var fileText = repositoryText.Replace("#PROJECTNAME#", _configuration.ProjectName)
+                var fileText = templateText.Replace("#PROJECTNAME#", _configuration.ProjectName)
                     .Replace("#ENTITY#", table.DisplayTableName)
                     .Replace("#TABLENAME#", table.TableName);
                 File.WriteAllText(Path.Combine(_configuration.MVCControllerDirectory, table.DisplayTableName + "Controller.cs"), fileText);
+            }
+        }
+
+        public void GenerateListPage()
+        {
+            if (!Directory.Exists(_configuration.ViewDirectory))
+            {
+                Directory.CreateDirectory(_configuration.ViewDirectory);
+            }
+            var templateText = File.ReadAllText(TemplateUtill.ListPageTemplatePath);
+            foreach (var table in _Tables)
+            {
+                var viewDir = Path.Combine(_configuration.ViewDirectory, table.DisplayTableName);
+                var dataColumn = "";
+                var columnInfo = _dbConnection.GetTableInfo(table.TableName);
+                if (columnInfo != null && columnInfo.Count > 0)
+                {
+                    foreach (var column in columnInfo)
+                    {
+                        dataColumn += "<th>"+ column.ColumnName + "</th>\n";
+                    }
+                    dataColumn += "<th class=\"text-center\">Action</th>";
+                }
+                if (!Directory.Exists(viewDir))
+                {
+                    Directory.CreateDirectory(viewDir);
+                }
+                var fileText = templateText.Replace("#DATACOLUMN#", dataColumn)
+                    .Replace("#ENTITY#", table.DisplayTableName);
+                File.WriteAllText(Path.Combine(viewDir, table.DisplayTableName + "List.cshtml"), fileText);
+            }
+        }
+
+        public void GenerateAddEditPage()
+        {
+            if (!Directory.Exists(_configuration.ViewDirectory))
+            {
+                Directory.CreateDirectory(_configuration.ViewDirectory);
+            }
+            var templateText = File.ReadAllText(TemplateUtill.AddEditPageTemplatePath);
+            foreach (var table in _Tables)
+            {
+                var viewDir = Path.Combine(_configuration.ViewDirectory, table.DisplayTableName);
+                var dataColumn = "";
+                var columnInfo = _dbConnection.GetTableInfo(table.TableName);
+                if (columnInfo != null && columnInfo.Count > 0)
+                {
+                    var col = 0;
+                    
+                    foreach (var column in columnInfo)
+                    {
+                        var type = TemplateUtill.SqlTypeToCSharp(column.DataType);
+                        var requiredHtml = column.IsAllowNull ? "" : "<span class='symbol required'></span>";
+                        var requiredTag = column.IsAllowNull ? "" : "required";
+                        if (col >= 12 || col == 0)
+                        {
+                            dataColumn += "<div class='row'>";
+                            col = 0;
+                        }
+                        
+                        if (column.ColumnName == "Id")
+                        {
+                            dataColumn += "<input type='hidden' id='hdnId' data-column='Id' value='@ViewBag.Id'>\n";
+                        }
+                        if(column.ColumnName == "Created" || column.ColumnName == "Updated")
+                        {
+                            dataColumn += "<input type='hidden' id='hdn"+ column.ColumnName + "' data-column='"+ column.ColumnName + "'>\n";
+                        }
+                        if (type == "bool")
+                        {
+                            var columnText = @"<div class='col-md-6 form-group'>
+                                                <label class='control-label'>{0} {2}</label>
+                                                <div class='checkbox'><label><input type='checkbox' class='grey' value='' id='chk{1}' data-column='{1}' data-error='Enter {0}' {3} checked> {0}</label></div>
+                                            </div>";
+                            dataColumn += string.Format(columnText, column.ColumnName.ToDisplayCase(), column.ColumnName, requiredHtml, requiredTag);
+                            col += 6;
+                        }
+                        else if (type == "DateTime")
+                        {
+                            var columnText = @"<div class='col-md-6 form-group'>
+                                                    <label class='control-label'>{0} {2}</label>
+                                                    <input type='date' placeholder='Select {0}' class='form-control' id='txt{1}' data-column='{1}' {3} data-error='Select {0}'>
+                                               </div>";
+                            dataColumn += string.Format(columnText, column.ColumnName.ToDisplayCase(), column.ColumnName, requiredHtml, requiredTag);
+                            col += 6;
+                        }
+                        else if (type == "string" && column.MaxLength >= 512 )
+                        {
+                            var columnText = @"<div class='col-md-6 form-group'>
+                                                    <label class='control-label'>{0} {2}</label>
+                                                    <textarea placeholder='Enter {0}' class='form-control' id='txt{1}' data-column='{1}' {3} data-error='Enter {0}'></textarea>
+                                                </div>";
+                            dataColumn += string.Format(columnText, column.ColumnName.ToDisplayCase(), column.ColumnName, requiredHtml, requiredTag);
+                            col += 6;
+                        }
+                        else if (type == "decimal" || type == "double" || type == "int")
+                        {
+                            var columnText = @"<div class='col-md-6 form-group'>
+                                                    <label class='control-label'>{0} {2}</label>
+                                                    <input type='number' placeholder='Enter {0}' class='form-control' id='txt{1}' data-column='{1}' {3} data-error='Enter {0}'>
+                                                </div>";
+                            dataColumn += string.Format(columnText, column.ColumnName.ToDisplayCase(), column.ColumnName, requiredHtml, requiredTag);
+                            col += 6;
+                        }
+                        else if(column.ColumnName != "Id")
+                        {
+                            var columnText = @"<div class='col-md-6 form-group'>
+                                                    <label class='control-label'>{0} {2}</label>
+                                                    <input type='text' placeholder='Enter {0}' class='form-control' id='txt{1}' data-column='{1}' {3} data-error='Enter {0}'>
+                                               </div>";
+                            dataColumn += string.Format(columnText, column.ColumnName.ToDisplayCase(), column.ColumnName, requiredHtml, requiredTag);
+                            col += 6;
+                        }
+
+                        if(col >= 12)
+                        {
+                            dataColumn += "</div>\n";
+                        }
+                    }
+                }
+                if (!Directory.Exists(viewDir))
+                {
+                    Directory.CreateDirectory(viewDir);
+                }
+                var fileText = templateText.Replace("#FORMCONTROL#", dataColumn)
+                    .Replace("#ENTITY#", table.DisplayTableName);
+                File.WriteAllText(Path.Combine(viewDir, "AddUpdate" +table.DisplayTableName + ".cshtml"), fileText);
             }
         }
     }

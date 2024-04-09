@@ -19,7 +19,8 @@
         public string ServicesDirectory { get { return Path.Combine(OutputDirectory, "Services"); } }
         public string ModelDirectory { get { return Path.Combine(OutputDirectory, "Models"); } }
         public string MappingDirectory { get { return Path.Combine(OutputDirectory, "Mapping"); } }
-        public string MVCControllerDirectory { get { return Path.Combine(OutputDirectory, "Controller"); } }
+        public string MVCControllerDirectory { get { return Path.Combine(OutputDirectory, "Controllers"); } }
+        public string ViewDirectory { get { return Path.Combine(OutputDirectory, "Views"); } }
         public string ScriptDirectory { get { return Path.Combine(OutputDirectory, "Scripts/Controller"); } }
     }
 

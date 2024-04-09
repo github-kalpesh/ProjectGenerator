@@ -10,18 +10,22 @@ namespace #PROJECTNAME#.Services
 {
     public static class #ENTITY#Services
     {
-        
+        I#ENTITY#Repository _Repository = new #ENTITY#Repository();
+
         #region Get #ENTITY#'s
 
         public static #ENTITY# Get#ENTITY#(Guid #ENTITY#Id)
         {
-			#ENTITY#Repository _Repository = new #ENTITY#Repository();
             return _Repository.Get(#ENTITY#Id);
+        }
+        
+        public static IList<#ENTITY#> GetList()
+        {
+            return _Repository.GetList();
         }
 
         public static IList<#ENTITY#> GetAll#ENTITY#()
         {
-			#ENTITY#Repository _Repository = new #ENTITY#Repository();
             return _Repository.GetAll();
         }
         
@@ -86,7 +90,6 @@ namespace #PROJECTNAME#.Services
 
 		public static List<DropDownItem> GetDropDownItem()
         {
-			#ENTITY#Repository _Repository = new #ENTITY#Repository();
             return _Repository.Get#ENTITY#DropDownItem().ToList();
         }
     }

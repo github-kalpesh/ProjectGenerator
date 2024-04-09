@@ -1,4 +1,5 @@
 ﻿using ProjectGenerator.Executor.BackEnd;
+using ProjectGenerator.Executor.FrontEnd;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,9 @@ namespace ProjectGenerator.Executor
         {
             var backEndCode = new BackEndCode(configuration);
             backEndCode.Create();
+
+            var frontCode = new FrontEndCode(configuration);
+            frontCode.Create();
         }
     }
 }

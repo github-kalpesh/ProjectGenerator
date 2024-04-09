@@ -34,4 +34,4 @@
     <!-- end: FORM VALIDATION 1 PANEL -->
 </div>
 </div>
-<script src="~/Scripts/Controller/#ENTITY#/AddUpdate#ENTITY#.js"></script>
+<script src="~/Scripts/Controller/#ENTITY#/AddEdit#ENTITY#.js"></script>

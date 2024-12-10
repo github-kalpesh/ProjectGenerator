@@ -1,0 +1,34 @@
+﻿using #PROJECTNAME#.Models;
+using NHibernate;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace #PROJECTNAME#.Repository
+{
+    interface I#ENTITY#Repository : IRepository<#ENTITY#>
+    {
+        IList<#ENTITY#> GetList();
+
+        IList<#ENTITY#> GetList(Guid[] ids);
+
+        IList<DropDownItem> Get#ENTITY#DropDownItem();
+    }
+    public class #ENTITY#Repository : Repository<#ENTITY#>, I#ENTITY#Repository
+    {
+        public IList<#ENTITY#> GetList()
+        {
+            return Session.QueryOver<#ENTITY#>().Where(x => x.IsActive).List();
+        }
+
+        public IList<#ENTITY#> GetList(Guid[] ids)
+        {
+            return Session.QueryOver<#ENTITY#>().Where(x => x.IsActive).WhereRestrictionOn(x => x.Id).IsIn(ids).List();
+        }
+
+        public IList<DropDownItem> Get#ENTITY#DropDownItem()
+        {
+            return Session.QueryOver<#ENTITY#>().Where(x => x.IsActive).List().Select(x => new DropDownItem() { Value = x.Id, Text = x.#ENTITY#Name, Selected = false }).OrderBy(x => x.Text).ToList();
+        }
+    }
+}

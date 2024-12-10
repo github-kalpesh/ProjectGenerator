@@ -3,7 +3,6 @@ using System;
 using System.Web.Http;
 using #PROJECTNAME#.Services;
 using #PROJECTNAME#.Models;
-using System.Diagnostics.Metrics;
 
 namespace #PROJECTNAME#.API
 {

@@ -25,7 +25,7 @@ namespace ProjectGenerator.Web.Controllers
             var configuration = new Configuration();
             configuration.ConnectionString = @"Data Source=DESKTOP-T312584;Initial Catalog=HospitalManagement;Integrated Security=True;";
             configuration.ProjectName = "HospitalManagement.Web";
-            configuration.OutputDirectory = @"D:\Work\DotNet\LiveProject\HospitalManagement\Web\HMS";
+            configuration.OutputDirectory = @"D:\Work\DotNet\LiveProject\HospitalManagement\PG";
             configuration.Pages = new List<PageDetail>() {
                 new PageDetail()
                 {

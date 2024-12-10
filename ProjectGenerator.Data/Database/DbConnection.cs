@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ProjectGenerator.Template;
+using Npgsql;
 
 namespace ProjectGenerator.Data.Database
 {
@@ -66,6 +67,36 @@ namespace ProjectGenerator.Data.Database
                     _dap.Fill(dataTable);
                     _con.Close();
                     return dataTable;
+                }
+            }
+        }
+        public DataTable ExecuteDatatableNpgsql(string SqlQuery)
+        {
+            using (var connection = new NpgsqlConnection(ConnectionString))
+            {
+                connection.Open();
+
+                string sql = SqlQuery;
+                using (var command = new NpgsqlCommand(sql, connection))
+                {
+                    using (var reader = command.ExecuteReader())
+                    {
+                        DataTable dataTable = new DataTable();
+                        // Process the results of the query
+                        while (reader.Read())
+                        {
+                            DataRow dataRow = dataTable.NewRow();
+
+                            for (int i = 0; i < reader.FieldCount; i++)
+                            {
+                                dataRow[i] = reader[i];
+                            }
+
+                            dataTable.Rows.Add(dataRow);
+                            // Access data from each row (e.g., reader.GetInt32(0) for the first column)
+                        }
+                        return dataTable;
+                    }
                 }
             }
         }
